@@ -2,11 +2,13 @@ var Hapi = require("hapi");
 var server = new Hapi.Server();
 server.connection({ port: 8989 });
 
+var _eventsProcessed = 0;
 var _eventsHandled = 0;
 
 var info = function (request, reply) {
   reply({
     version: require('./package.json').version,
+    eventsProcessed: _eventsProcessed,
     eventsHandled: _eventsHandled
   });
 };
@@ -14,7 +16,7 @@ var info = function (request, reply) {
 server.route({ method: 'GET', path: '/info', handler: info });
 
 server.handleEvent = function(type, stream, data, cb) {
-  _eventsHandled++;
+  _eventsProcessed++;
   cb(null);
 }
 
