@@ -1,10 +1,13 @@
 var Hapi = require("hapi");
 var server = new Hapi.Server();
 server.connection({ port: 8989 });
-var hello = function (request, reply) {
-  reply('Hello World');
+
+var info = function (request, reply) {
+  reply({version: require('./package.json').version});
 };
-server.route({ method: 'GET', path: '/', handler: hello });
+
+server.route({ method: 'GET', path: '/info', handler: info });
+
 server.start();
 console.log('hello server http://localhost:8989');
 module.exports = server;
