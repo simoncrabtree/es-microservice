@@ -1,25 +1,35 @@
 var Hapi = require("hapi");
-var server = new Hapi.Server();
-server.connection({ port: 8989 });
 
-var _eventsProcessed = 0;
-var _eventsHandled = 0;
+module.exports = function() {
+  var server = new Hapi.Server();
+  server.connection({ port: 8989 });
 
-var info = function (request, reply) {
-  reply({
-    version: require('./package.json').version,
-    eventsProcessed: _eventsProcessed,
-    eventsHandled: _eventsHandled
-  });
-};
+  var _handlers = {
+    OrganisationCreated_v1: function(stream, data) {
+    }
+  };
+  var _eventsProcessed = 0;
+  var _eventsHandled = 0;
 
-server.route({ method: 'GET', path: '/info', handler: info });
+  var info = function (request, reply) {
+    reply({
+      version: require('./package.json').version,
+      eventsProcessed: _eventsProcessed,
+      eventsHandled: _eventsHandled
+    });
+  };
 
-server.handleEvent = function(type, stream, data, cb) {
-  _eventsProcessed++;
-  cb(null);
+  server.route({ method: 'GET', path: '/info', handler: info });
+
+  server.handleEvent = function(type, stream, data, cb) {
+    _eventsProcessed++;
+    if(_handlers[type]){
+      _handlers[type](stream, data);
+      _eventsHandled++;
+    }
+    cb(null);
+  }
+
+  server.start();
+  return server;
 }
-
-server.start();
-console.log('hello server http://localhost:8989');
-module.exports = server;
