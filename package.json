@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/lab/bin/lab -c"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -17,11 +17,12 @@
   },
   "homepage": "https://github.com/simoncrabtree/es-microservice#readme",
   "dependencies": {
-    "hapi": "^12.1.0",
-    "joi": "^7.2.2"
+    "hapi": "12.1.0",
+    "joi": "7.2.2"
   },
   "devDependencies": {
-    "code": "^2.1.0",
-    "lab": "^8.2.0"
+    "code": "2.1.0",
+    "lab": "8.2.0",
+    "mocha": "2.4.5"
   }
 }
