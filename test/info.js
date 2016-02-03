@@ -23,7 +23,7 @@ describe('Server', function() {
         server.inject(options, function(response){
           var result=response.result;
           assert.equal(result.eventsProcessed, 1);
-          assert.equal(result.eventsHandled ,0);
+          assert.equal(result.eventsHandled, 0);
           done();
         });
       });
